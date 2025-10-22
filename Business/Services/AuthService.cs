@@ -30,7 +30,8 @@ namespace Business.Services
             {
                 Username = dto.Username,
                 Email = dto.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password)
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Role = dto.Role // ✅ Save the role from the DTO
             };
 
             await _userRepo.AddAsync(user);

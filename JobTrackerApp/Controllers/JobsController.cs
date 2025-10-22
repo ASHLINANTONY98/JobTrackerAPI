@@ -21,6 +21,10 @@ namespace JobTrackerApp.Controllers
         private int GetUserId() =>
             int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+        private bool IsAdmin() =>
+           User.IsInRole("Admin");
+
+        [Authorize(Roles = "User,Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateJob([FromBody] JobCreateDto dto)
         {
@@ -28,6 +32,7 @@ namespace JobTrackerApp.Controllers
             return CreatedAtAction(nameof(GetJobById), new { id = jobId }, new { id = jobId });
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet]
         public async Task<IActionResult> GetJobs(
             [FromQuery] string? status,
@@ -41,6 +46,7 @@ namespace JobTrackerApp.Controllers
             return Ok(jobs);
         }
 
+        [Authorize(Roles = "User,Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobById(int id)
         {
@@ -49,7 +55,7 @@ namespace JobTrackerApp.Controllers
             return Ok(job);
         }
 
-
+        [Authorize(Roles = "User,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateJob(int id, [FromBody] JobUpdateDto dto)
         {
@@ -57,6 +63,7 @@ namespace JobTrackerApp.Controllers
             return updated ? NoContent() : NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJob(int id)
         {
@@ -64,6 +71,7 @@ namespace JobTrackerApp.Controllers
             return deleted ? NoContent() : NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("export/csv")]
         public async Task<IActionResult> ExportCsv()
         {
@@ -71,6 +79,7 @@ namespace JobTrackerApp.Controllers
             return File(csvBytes, "text/csv", "jobs.csv");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("export/pdf")]
         public async Task<IActionResult> ExportPdf()
         {

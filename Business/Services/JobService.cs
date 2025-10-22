@@ -81,7 +81,6 @@ namespace Business.Services
             return PdfExporter.GeneratePdf(jobs);
         }
 
-
         public async Task<JobResponseDto?> GetJobByIdAsync(int userId, int jobId)
         {
             var job = await _jobRepo.GetByIdAsync(jobId, userId);

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Common.DTOs;
 using Business.Export;
-using Common.Interfaces;
+using Business.Interfaces;
 using DataAccess.Entities;
-using DataAccess.Repositories;
+using DataAccess.Interfaces;
 
 namespace Business.Services
 {

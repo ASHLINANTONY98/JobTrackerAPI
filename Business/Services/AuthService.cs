@@ -1,12 +1,12 @@
 ﻿using Common.DTOs;
-using Common.Interfaces;
 using DataAccess.Entities;
-using DataAccess.Repositories;
+using DataAccess.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Business.Interfaces;
 
 namespace Business.Services
 {

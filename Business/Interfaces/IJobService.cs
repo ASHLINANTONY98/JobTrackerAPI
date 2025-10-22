@@ -1,6 +1,6 @@
 ﻿using Common.DTOs;
 
-namespace Common.Interfaces
+namespace Business.Interfaces
 {
     public interface IJobService
     {
@@ -12,6 +12,5 @@ namespace Common.Interfaces
         Task<byte[]> ExportToPdfAsync(int userId);
 
         Task<JobResponseDto?> GetJobByIdAsync(int userId, int jobId);
-
     }
 }

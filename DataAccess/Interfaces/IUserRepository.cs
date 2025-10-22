@@ -1,11 +1,10 @@
 ﻿using DataAccess.Entities;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Interfaces
 {
     public interface IUserRepository
     {
         Task<User?> GetByEmailAsync(string email);
         Task AddAsync(User user);
     }
-
 }

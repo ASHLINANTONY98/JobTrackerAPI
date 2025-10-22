@@ -1,6 +1,6 @@
 ﻿using DataAccess.Entities;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Interfaces
 {
     public interface IJobRepository
     {
@@ -10,5 +10,4 @@ namespace DataAccess.Repositories
         Task UpdateAsync(JobApplication job);
         Task DeleteAsync(JobApplication job);
     }
-
 }

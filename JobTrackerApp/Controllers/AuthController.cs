@@ -1,5 +1,5 @@
 ﻿using Common.DTOs;
-using Common.Interfaces;
+using Business.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobTrackerApp.Controllers

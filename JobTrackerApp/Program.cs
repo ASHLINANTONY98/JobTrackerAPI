@@ -1,8 +1,9 @@
 using Business.Mapping;
 using Business.Services;
-using Common.Interfaces;
+using Business.Interfaces;
 using DataAccess.DbContext.DataAccess.DbContext;
 using DataAccess.Repositories;
+using DataAccess.Interfaces;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using FluentValidation;

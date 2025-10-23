@@ -9,5 +9,10 @@ namespace DataAccess.Interfaces
         Task AddAsync(JobApplication job);
         Task UpdateAsync(JobApplication job);
         Task DeleteAsync(JobApplication job);
+
+        Task<List<JobApplication>> GetAllAsync();
+        Task<JobApplication?> GetByIdAsync(int id); // for admin
+
+
     }
 }

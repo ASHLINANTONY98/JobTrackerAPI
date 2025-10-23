@@ -12,6 +12,7 @@ using JobTrackerApp.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Common.Helpers;
 using Microsoft.Extensions.DependencyInjection;
+using JobTrackerApp.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,6 +51,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

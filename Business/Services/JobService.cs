@@ -26,20 +26,19 @@ namespace Business.Services
             return job.Id;
         }
 
-        public async Task<List<JobResponseDto>> GetJobsAsync(int userId, string? status, string? location, DateTime? from, DateTime? to, int page, int limit)
+        public async Task<List<JobResponseDto>> GetJobsAsync(int userId, bool isAdmin, string? status, string? location, DateTime? from, DateTime? to, int page, int limit)
         {
-            var jobs = await _jobRepo.GetAllByUserAsync(userId);
+            var jobs = isAdmin
+                ? await _jobRepo.GetAllAsync()
+                : await _jobRepo.GetAllByUserAsync(userId);
 
             // Filtering
             if (!string.IsNullOrEmpty(status))
                 jobs = jobs.Where(j => j.Status.ToString().Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
-
             if (!string.IsNullOrEmpty(location))
                 jobs = jobs.Where(j => j.Location.Contains(location)).ToList();
-
             if (from.HasValue)
                 jobs = jobs.Where(j => j.AppliedDate >= from.Value).ToList();
-
             if (to.HasValue)
                 jobs = jobs.Where(j => j.AppliedDate <= to.Value).ToList();
 
@@ -49,9 +48,12 @@ namespace Business.Services
             return _mapper.Map<List<JobResponseDto>>(jobs);
         }
 
-        public async Task<bool> UpdateJobAsync(int userId, int jobId, JobUpdateDto dto)
+        public async Task<bool> UpdateJobAsync(int userId, bool isAdmin, int jobId, JobUpdateDto dto)
         {
-            var job = await _jobRepo.GetByIdAsync(jobId, userId);
+            var job = isAdmin
+                ? await _jobRepo.GetByIdAsync(jobId)
+                : await _jobRepo.GetByIdAsync(jobId, userId);
+
             if (job == null) return false;
 
             _mapper.Map(dto, job);
@@ -60,32 +62,46 @@ namespace Business.Services
             return true;
         }
 
-        public async Task<bool> DeleteJobAsync(int userId, int jobId)
+        public async Task<bool> DeleteJobAsync(int userId, bool isAdmin, int jobId)
         {
-            var job = await _jobRepo.GetByIdAsync(jobId, userId);
+            var job = isAdmin
+                ? await _jobRepo.GetByIdAsync(jobId) // no user filter
+                : await _jobRepo.GetByIdAsync(jobId, userId);
+
             if (job == null) return false;
 
             await _jobRepo.DeleteAsync(job);
             return true;
         }
 
-        public async Task<byte[]> ExportToCsvAsync(int userId)
+        public async Task<byte[]> ExportToCsvAsync(int userId, bool isAdmin)
         {
-            var jobs = await _jobRepo.GetAllByUserAsync(userId);
+            var jobs = isAdmin
+                ? await _jobRepo.GetAllAsync()
+                : await _jobRepo.GetAllByUserAsync(userId);
+
             return CsvExporter.GenerateCsv(jobs);
         }
 
-        public async Task<byte[]> ExportToPdfAsync(int userId)
+        public async Task<byte[]> ExportToPdfAsync(int userId, bool isAdmin)
         {
-            var jobs = await _jobRepo.GetAllByUserAsync(userId);
+            var jobs = isAdmin
+                ? await _jobRepo.GetAllAsync()
+                : await _jobRepo.GetAllByUserAsync(userId);
+
             return PdfExporter.GeneratePdf(jobs);
         }
 
-        public async Task<JobResponseDto?> GetJobByIdAsync(int userId, int jobId)
+
+        public async Task<JobResponseDto?> GetJobByIdAsync(int userId, bool isAdmin, int jobId)
         {
-            var job = await _jobRepo.GetByIdAsync(jobId, userId);
+            var job = isAdmin
+                ? await _jobRepo.GetByIdAsync(jobId)
+                : await _jobRepo.GetByIdAsync(jobId, userId);
+
             return job == null ? null : _mapper.Map<JobResponseDto>(job);
         }
+
 
     }
 

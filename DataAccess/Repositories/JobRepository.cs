@@ -44,6 +44,17 @@ namespace DataAccess.Repositories
             _context.JobApplications.Remove(job);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<JobApplication>> GetAllAsync()
+        {
+            return await _context.JobApplications.ToListAsync();
+        }
+
+        public async Task<JobApplication?> GetByIdAsync(int id)
+        {
+            return await _context.JobApplications.FirstOrDefaultAsync(j => j.Id == id);
+        }
+
     }
 
 }

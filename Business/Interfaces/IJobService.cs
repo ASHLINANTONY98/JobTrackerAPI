@@ -5,12 +5,12 @@ namespace Business.Interfaces
     public interface IJobService
     {
         Task<int> AddJobAsync(int userId, JobCreateDto dto);
-        Task<List<JobResponseDto>> GetJobsAsync(int userId, string? status, string? location, DateTime? from, DateTime? to, int page, int limit);
-        Task<bool> UpdateJobAsync(int userId, int jobId, JobUpdateDto dto);
-        Task<bool> DeleteJobAsync(int userId, int jobId);
-        Task<byte[]> ExportToCsvAsync(int userId);
-        Task<byte[]> ExportToPdfAsync(int userId);
+        Task<List<JobResponseDto>> GetJobsAsync(int userId, bool isAdmin, string? status, string? location, DateTime? from, DateTime? to, int page, int limit);
+        Task<bool> UpdateJobAsync(int userId, bool isAdmin, int jobId, JobUpdateDto dto);
+        Task<bool> DeleteJobAsync(int userId, bool isAdmin, int jobId);
+        Task<byte[]> ExportToCsvAsync(int userId, bool isAdmin);
+        Task<byte[]> ExportToPdfAsync(int userId, bool isAdmin);
 
-        Task<JobResponseDto?> GetJobByIdAsync(int userId, int jobId);
+        Task<JobResponseDto?> GetJobByIdAsync(int userId, bool isAdmin, int jobId);
     }
 }

@@ -72,6 +72,20 @@ updatedAt	datetime	Timestamp of last update
 
     Deployment: Railway, Render, or Azure
 
+    ## 🐳 Run with Docker (No Setup Needed)
+
+    ### Prerequisites
+
+    - Docker Desktop installed
+
+    ### Steps
+
+    ```bash
+    git clone https://github.com/ASHLINANTONY98/JobTrackerAPI.git
+    cd JobTrackerAPI
+    docker-compose up --build
+
+
 🎯 Bonus Challenges (Optional)
 
     Role-based access (admin vs user)

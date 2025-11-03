@@ -1,4 +1,4 @@
-using Business.Mapping;
+﻿using Business.Mapping;
 using Business.Services;
 using Business.Interfaces;
 using DataAccess.DbContext.DataAccess.DbContext;
@@ -11,8 +11,8 @@ using FluentValidation.AspNetCore;
 using JobTrackerApp.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Common.Helpers;
-using Microsoft.Extensions.DependencyInjection;
 using JobTrackerApp.Middlewares;
+using Business.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +29,15 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IJobService, JobService>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddHostedService<OtpCleanupService>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
+//validate all dto vali in that folder
 builder.Services.AddValidatorsFromAssemblyContaining<Business.Validators.RegisterDtoValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -43,23 +46,25 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var app = builder.Build();
+/////////////////////////////////////first came here//////////////////////////////////////
 
-// Configure the HTTP request pipeline.
+var app = builder.Build();   // create the application
+
+// Configure the HTTP request pipeline. and a ui for testing api
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>(); //then it came to this line and Wraps everything in try catch
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection();//then here Redirects HTTP → HTTPS
 
-app.UseAuthentication();
+app.UseAuthentication();//then Validates JWT token if present
 
-app.UseAuthorization();
+app.UseAuthorization();//then  Enforces Authorize rules
 
-app.MapControllers();
+app.MapControllers();//then to your controller actions goo
 
-app.Run();
+app.Run();// starts the server and active pipeline and swagger

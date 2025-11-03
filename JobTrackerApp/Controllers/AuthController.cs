@@ -45,5 +45,14 @@ namespace JobTrackerApp.Controllers
             _logger.LogInformation("Login successful for email: {Email}", dto.Email);
             return Ok(new { Token = token });
         }
+
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp([FromBody] OtpVerifyDto dto)
+        {
+            var result = await _authService.VerifyOtpAsync(dto);
+            if (!result) return BadRequest("Invalid or expired OTP");
+            return Ok("Account verified");
+        }
+
     }
 }

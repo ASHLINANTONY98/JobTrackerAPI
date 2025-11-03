@@ -6,5 +6,6 @@ namespace Business.Interfaces
     {
         Task<bool> RegisterAsync(RegisterDto dto);
         Task<string?> LoginAsync(LoginDto dto);
+        Task<bool> VerifyOtpAsync(OtpVerifyDto dto);
     }
 }
